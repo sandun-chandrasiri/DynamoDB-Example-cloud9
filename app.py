@@ -44,7 +44,22 @@ def create_table():
 
     return "Data written successfully"
 
-    return redirect("/")
+@app.route("/put-via-form", methods=['POST'])
+def put_item():
+    dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1')
+    table = dynamodb.Table('student')
+
+   # item = {
+   #     'regNo' : '001',
+   #     'name' : 'Jane',
+   #     'age' : 26
+   # }
+
+    data = request.form.to_dict()
+
+    table.put_item(Item=data)
+    return "Successfully Updated"
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=8080,host='0.0.0.0')
